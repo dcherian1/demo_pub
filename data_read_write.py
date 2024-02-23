@@ -6,9 +6,9 @@ from io import StringIO
 
 # Specify the bucket name and file key (path)
 input_bucket_name = 'adp-eu-west-1-101965541725-dev2-dlz'
-input_file_key = 'edfdemo/ds_COTx_s4WGEN1_BrgTmp/'
+input_file_key = 'fisheries_wdfwraw/wa_salmon_species_population/'
 output_bucket_name = 'adp-eu-west-1-101965541725-dev2-lz'
-output_file_key = 'edfdemo/ds_COTx_s4WGEN1_BrgTmp_processed/'
+output_file_key = 'fisheries_wdfprocessed/wa_salmon_species_population_processed/'
 user = 'dcherian'
 file_type = 'csv'
 file_name = "processed"
@@ -20,6 +20,7 @@ s3 = boto3.client('s3')
 
 file = s3.list_objects_v2(Bucket= input_bucket_name, Prefix = input_file_key)['Contents'][0]
 key = file.get('Key')
+print(key)
 object = s3.get_object(Bucket=input_bucket_name,Key=key)
 data = object['Body'].read().decode('utf-8')
 df = pd.read_csv(StringIO(data))
