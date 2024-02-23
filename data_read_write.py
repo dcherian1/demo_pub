@@ -8,8 +8,8 @@ from io import StringIO
 input_bucket_name = 'adp-eu-west-1-101965541725-dev2-dlz'
 input_file_key = 'fisheries_wdfwraw/wa_salmon_species_population/'
 output_bucket_name = 'adp-eu-west-1-101965541725-dev2-lz'
-output_file_key = 'fisheries_wdfprocessed/wa_salmon_species_population_processed/'
-user = 'dcherian'
+output_file_key = 'fisheries_wdfwraw/wa_salmon_species_population_processed'
+user = 'williammiller'
 file_type = 'csv'
 file_name = "processed"
 upload_date = str(int(time.time()))
