@@ -1,0 +1,76 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code.
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*.
+
+```{r}
+# Generate some random data
+set.seed(123)
+x <- 1:100
+y <- 2*x + rnorm(100)
+
+# Perform linear regression
+model <- lm(y ~ x)
+
+# Print summary of the regression
+summary(model)
+
+# Plot the data and regression line
+plot(x, y, main="Linear Regression Example", xlab="X", ylab="Y")
+abline(model, col="red")
+
+```
+
+```{python}
+import pandas as pd
+import boto3
+import time
+from botocore.exceptions import ClientError
+from io import StringIO 
+```
+
+```{python}
+
+# Specify the bucket name and file key (path)
+input_bucket_name = 'adp-eu-west-1-101965541725-dev2-dlz'
+input_file_key = 'edfdemo/ds_COTx_s4WGEN1_BrgTmp/'
+output_bucket_name = 'adp-eu-west-1-101965541725-dev2-lz'
+output_file_key = 'edfdemo/ds_COTx_s4WGEN1_BrgTmp_processed'
+user = 'dcherian'
+file_type = 'csv'
+file_name = "processed"
+upload_date = str(int(time.time()))
+prefix = "/".join([output_file_key, "upload_date=" + upload_date, user, file_type, file_name])
+
+# Initialize the S3 client
+s3 = boto3.client('s3')
+```
+
+```{python}
+
+
+file = s3.list_objects_v2(Bucket= input_bucket_name, Prefix = input_file_key)['Contents'][0]
+key = file.get('Key')
+object = s3.get_object(Bucket=input_bucket_name,Key=key)
+data = object['Body'].read().decode('utf-8')
+df = pd.read_csv(StringIO(data))
+df.shape
+
+df2 = df.dropna(how='any')
+df2.shape
+
+bytes_to_write = df2.to_csv(index=False, header=True, sep=',', encoding='utf-8')
+s3.put_object(Bucket=output_bucket_name, Key=prefix, Body=bytes_to_write.encode('utf-8'))
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in t
+
+he editor is displayed.
