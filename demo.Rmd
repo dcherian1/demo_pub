@@ -45,7 +45,6 @@ file_type = 'csv'
 file_name = "processed"
 upload_date = str(int(time.time()))
 prefix = "/".join([output_file_key, "upload_date=" + upload_date, user, file_type, file_name])
-print(prefix)
 
 # Initialize the S3 client
 s3 = boto3.client('s3')
