@@ -25,12 +25,6 @@ abline(model, col="red")
 
 ```
 
-```{r}
-
-print(key)
-data <- get_object(bucket = input_bucket_name, key = key)
-```
-
 ```{python}
 import pandas as pd
 import boto3
