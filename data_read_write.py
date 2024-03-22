@@ -28,6 +28,7 @@ df.shape
 
 df2 = df.dropna(how='any')
 df2.shape
+print ("Git test123")
 
 bytes_to_write = df2.to_csv(index=False, header=True, sep=',', encoding='utf-8')
 s3.put_object(Bucket=output_bucket_name, Key=prefix, Body=bytes_to_write.encode('utf-8'))
